@@ -20,7 +20,7 @@ li {
 }
 
 .interface {
-  height: 2em;
+  height: 5em;
 }
 
 </style>
@@ -36,14 +36,15 @@ li {
   <main>
   <p class="instructions"></p>
   <div class="interface">
+    <p class="timer"></p>
     <button class="btn-start">Start Quiz</button>
   </div>
   <p class="question"></p>
   <ul>
     <li class="option option0"></li>
     <li class="option option1"></li>
-	<li class="option option2"></li>
-	<li class="option option3"></li>
+    <li class="option option2"></li>
+    <li class="option option3"></li>
   </ul>
   </main>
   
@@ -61,7 +62,7 @@ var quizCount = 0;
 var isAnswered = false;
 var wins = 0;
 var losses = 0;
-
+var time = 10;
 var challenges = [
   {
   q: "2 + 2",
@@ -74,6 +75,21 @@ var challenges = [
   options:[12,13,14,15]
   },
 ]
+
+// timer test
+
+function countdown() {
+  if (time > 0) {
+    time--;
+    $(".timer").text(time);
+  }
+  else {
+    clearInterval(timer);
+  }
+}
+
+var timer;
+timer = setInterval(countdown,1000);
 
 $(".btn-start").click(function (){
 $(".btn-start").hide(100);
