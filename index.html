@@ -19,6 +19,10 @@ li {
   margin: 1em;
 }
 
+.interface {
+  height: 2em;
+}
+
 </style>
 
 </head>
@@ -31,6 +35,9 @@ li {
   
   <main>
   <p class="instructions"></p>
+  <div class="interface">
+    <button class="btn-start">Start Quiz</button>
+  </div>
   <p class="question"></p>
   <ul>
     <li class="option option0"></li>
@@ -50,30 +57,46 @@ li {
 $(document).ready(function(){ // start jQuery
 
 
-var challengeCount = 0;
+var quizCount = 0;
 var isAnswered = false;
 var wins = 0;
 var losses = 0;
 
-challenge = {
+var challenges = [
+  {
   q: "2 + 2",
   a: 4,
   options:[1,2,3,4]
-}
+  },
+  {
+  q: "6 + 7",
+  a: 13,
+  options:[12,13,14,15]
+  },
+]
 
+$(".btn-start").click(function (){
+$(".btn-start").hide(100);
+// New Round
+if (quizCount < challenges.length) {
 $(".instructions").text("Click the option to answer the question.");
+$(".question").text(challenges[quizCount].q);
 
-$(".question").text(challenge.q);
-
-for (var i = 0; i < challenge.options.length; i++) {
-  $(".option" + i).text(challenge.options[i]);
+// populate response options
+for (var j = 0; j < challenges[quizCount].options.length; j++) {
+  $(".option" + j).text(challenges[quizCount].options[j]);
 }
 
+// process user selection
 $(".option").on("click",function() {
-  if ($(this).text() == challenge.a) {
+  if ($(this).text() == challenges[quizCount].a) {
     wins++;
+    quizCount++;
     $(".instructions").text("You're right!");
+    $(".btn-start").text("Next Question").show(100);
   }
+});
+} // end New Round
 });
 
 }); // end jQuery
