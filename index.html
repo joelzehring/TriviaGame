@@ -12,6 +12,15 @@
   <!-- Added link to the jQuery Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
+<style>
+
+li {
+  padding: 1em;
+  margin: 1em;
+}
+
+</style>
+
 </head>
 
 <body>
@@ -22,6 +31,13 @@
   
   <main>
   <p class="instructions"></p>
+  <p class="question"></p>
+  <ul>
+    <li class="option option0"></li>
+    <li class="option option1"></li>
+	<li class="option option2"></li>
+	<li class="option option3"></li>
+  </ul>
   </main>
   
   <footer>
@@ -33,13 +49,32 @@
 
 $(document).ready(function(){ // start jQuery
 
-var isAnswered = false;
 
-question  = {
-  q: ,
-  a:  ,
-  options: ,
+var challengeCount = 0;
+var isAnswered = false;
+var wins = 0;
+var losses = 0;
+
+challenge = {
+  q: "2 + 2",
+  a: 4,
+  options:[1,2,3,4]
 }
+
+$(".instructions").text("Click the option to answer the question.");
+
+$(".question").text(challenge.q);
+
+for (var i = 0; i < challenge.options.length; i++) {
+  $(".option" + i).text(challenge.options[i]);
+}
+
+$(".option").on("click",function() {
+  if ($(this).text() == challenge.a) {
+    wins++;
+    $(".instructions").text("You're right!");
+  }
+});
 
 }); // end jQuery
 
