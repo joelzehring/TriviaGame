@@ -14,9 +14,16 @@
 
 <style>
 
+ul {
+  list-style: none;
+  padding: 0;
+}
+
 li {
   padding: 1em;
   margin: 1em;
+  background-color: gray;
+  color: white;
 }
 
 .interface {
@@ -40,7 +47,7 @@ li {
     <button class="btn-start">Start Quiz</button>
   </div>
   <p class="question"></p>
-  <ul>
+  <ul class="responses">
     <li class="option option0"></li>
     <li class="option option1"></li>
     <li class="option option2"></li>
@@ -76,6 +83,24 @@ var challenges = [
   },
 ]
 
+// Intial instructions prompt user to start quiz
+
+// User clicks button to start quiz
+
+// First quiz question and multiple-choice options appear
+
+// Countdown timer begins counting down remaining time to select an option
+
+// If no option is selected, display a message telling the user time has run out, and display the correct answer
+
+// If the user selects the wrong answer, display a "wrong answer" message and display the correct answer
+
+// If the user selects the correct answer, display a "congrats" message
+
+// After a short time, advance the user to the next question
+
+// When all questions have completed, display a message with number of questions answered correctly and incorrectly
+	
 // timer test
 
 function countdown() {
@@ -93,15 +118,16 @@ timer = setInterval(countdown,1000);
 
 $(".btn-start").click(function (){
 $(".btn-start").hide(100);
+
 // New Round
 if (quizCount < challenges.length) {
-$(".instructions").text("Click the option to answer the question.");
-$(".question").text(challenges[quizCount].q);
+  $(".instructions").text("Click the option to answer the question.");
+  $(".question").text(challenges[quizCount].q);
 
 // populate response options
-for (var j = 0; j < challenges[quizCount].options.length; j++) {
-  $(".option" + j).text(challenges[quizCount].options[j]);
-}
+  for (var j = 0; j < challenges[quizCount].options.length; j++) {
+    $(".option" + j).text(challenges[quizCount].options[j]);
+  }
 
 // process user selection
 $(".option").on("click",function() {
