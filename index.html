@@ -66,7 +66,6 @@ $(document).ready(function(){ // start jQuery
 
 
 var quizCount = 0;
-var isAnswered = false;
 var wins = 0;
 var losses = 0;
 var time = 10;
@@ -83,6 +82,24 @@ var challenges = [
   },
 ]
 
+function newGame() {
+  quizCount = 0;
+  wins = 0;
+  losses = 0;
+}
+
+function newRound() {
+  if (quizCount < challenges.length) {
+    $(".instructions").text("Click the option to answer the question.");
+    $(".question").text(challenges[quizCount].q);
+
+    // populate response options
+    for (var j = 0; j < challenges[quizCount].options.length; j++) {
+      $(".option" + j).text(challenges[quizCount].options[j]);
+    }
+  }
+}
+
 // Intial instructions prompt user to start quiz
 
 // User clicks button to start quiz
@@ -92,17 +109,19 @@ var challenges = [
 // Countdown timer begins counting down remaining time to select an option
 
 // If no option is selected, display a message telling the user time has run out, and display the correct answer
+  // setTimeout(2000);
 
 // If the user selects the wrong answer, display a "wrong answer" message and display the correct answer
+  //setTimeout(2000);
 
 // If the user selects the correct answer, display a "congrats" message
+  // setTimeout(2000);
 
 // After a short time, advance the user to the next question
 
 // When all questions have completed, display a message with number of questions answered correctly and incorrectly
 	
 // timer test
-
 function countdown() {
   if (time > 0) {
     time--;
@@ -113,32 +132,26 @@ function countdown() {
   }
 }
 
-var timer;
-timer = setInterval(countdown,1000);
+var timer = setInterval(countdown,1000);
 
+// user clicks button to start quiz
 $(".btn-start").click(function (){
-$(".btn-start").hide(100);
+  $(".btn-start").hide(100);
+  newGame();
+  newRound();
+});
 
-// New Round
-if (quizCount < challenges.length) {
-  $(".instructions").text("Click the option to answer the question.");
-  $(".question").text(challenges[quizCount].q);
-
-// populate response options
-  for (var j = 0; j < challenges[quizCount].options.length; j++) {
-    $(".option" + j).text(challenges[quizCount].options[j]);
-  }
-
-// process user selection
+// user clicks button to answer question
 $(".option").on("click",function() {
   if ($(this).text() == challenges[quizCount].a) {
     wins++;
     quizCount++;
+    setTimeout(function(){
+      // $(".btn-start").text("Next Question").show(100);
+      newRound();},
+      2000);
     $(".instructions").text("You're right!");
-    $(".btn-start").text("Next Question").show(100);
   }
-});
-} // end New Round
 });
 
 }); // end jQuery
