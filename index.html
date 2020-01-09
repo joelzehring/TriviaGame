@@ -30,6 +30,18 @@ li {
   height: 5em;
 }
 
+.q-and-a {
+  margin: 1em;
+}
+
+.responses {
+  padding: 0;
+}
+
+.option {
+  margin-left: 0;
+}
+
 </style>
 
 </head>
@@ -46,13 +58,15 @@ li {
     <p class="timer"></p>
     <button class="btn-start">Start Quiz</button>
   </div>
-  <p class="question"></p>
-  <ul class="responses">
-    <li class="option option0"></li>
-    <li class="option option1"></li>
-    <li class="option option2"></li>
-    <li class="option option3"></li>
-  </ul>
+  <div class="q-and-a">
+    <p class="question"></p>
+    <ul class="responses">
+      <li class="option option0"></li>
+      <li class="option option1"></li>
+      <li class="option option2"></li>
+      <li class="option option3"></li>
+    </ul>
+  </div>
   </main>
   
   <footer>
@@ -113,6 +127,15 @@ function countdown() {
   }
   else {
     clearInterval(timer);
+    losses++;
+    quizCount++;
+    $(".instructions").text("Out of time!");
+    $(".timer").text(" ");
+    clearInterval(timer);
+    setTimeout(function(){
+      newRound();},
+      2000
+    );
   }
 }
 
@@ -123,22 +146,31 @@ $(".btn-start").click(function (){
   newGame();
   newRound();
 });
-
+  
 // user clicks button to answer question
 $(".option").on("click",function() {
   if ($(this).text() == challenges[quizCount].a) {
     wins++;
     quizCount++;
-    setTimeout(function(){
-      // $(".btn-start").text("Next Question").show(100);
-      newRound();},
-      2000);
     $(".instructions").text("You're right!");
+    $(".timer").text(" ");
     clearInterval(timer);
+    setTimeout(function(){
+      newRound();},
+      2000
+    );
   }
 
-  else {
-
+  else if ($(this).text() !== challenges[quizCount].a) {
+    losses++;
+    quizCount++;
+    $(".instructions").text("Wrong answer!");
+    $(".timer").text(" ");
+    clearInterval(timer);
+    setTimeout(function(){
+      newRound();},
+      2000
+    );
   }
 });
 
