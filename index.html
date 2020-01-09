@@ -89,6 +89,7 @@ function newGame() {
 }
 
 function newRound() {
+  console.log("newRound got called");
   if (quizCount < challenges.length) {
     $(".instructions").text("Click the option to answer the question.");
     $(".question").text(challenges[quizCount].q);
@@ -97,8 +98,51 @@ function newRound() {
     for (var j = 0; j < challenges[quizCount].options.length; j++) {
       $(".option" + j).text(challenges[quizCount].options[j]);
     }
+
+    time = 10;
+    timer = setInterval(countdown,1000);
   }
 }
+
+var timer; 
+
+function countdown() {
+  if (time > 0) {
+    time--;
+    $(".timer").text(time);
+  }
+  else {
+    clearInterval(timer);
+  }
+}
+
+
+// user clicks button to start quiz
+$(".btn-start").click(function (){
+  $(".btn-start").hide(100);
+  newGame();
+  newRound();
+});
+
+// user clicks button to answer question
+$(".option").on("click",function() {
+  if ($(this).text() == challenges[quizCount].a) {
+    wins++;
+    quizCount++;
+    setTimeout(function(){
+      // $(".btn-start").text("Next Question").show(100);
+      newRound();},
+      2000);
+    $(".instructions").text("You're right!");
+    clearInterval(timer);
+  }
+
+  else {
+
+  }
+});
+
+}); // end jQuery
 
 // Intial instructions prompt user to start quiz
 
@@ -122,39 +166,6 @@ function newRound() {
 // When all questions have completed, display a message with number of questions answered correctly and incorrectly
 	
 // timer test
-function countdown() {
-  if (time > 0) {
-    time--;
-    $(".timer").text(time);
-  }
-  else {
-    clearInterval(timer);
-  }
-}
-
-var timer = setInterval(countdown,1000);
-
-// user clicks button to start quiz
-$(".btn-start").click(function (){
-  $(".btn-start").hide(100);
-  newGame();
-  newRound();
-});
-
-// user clicks button to answer question
-$(".option").on("click",function() {
-  if ($(this).text() == challenges[quizCount].a) {
-    wins++;
-    quizCount++;
-    setTimeout(function(){
-      // $(".btn-start").text("Next Question").show(100);
-      newRound();},
-      2000);
-    $(".instructions").text("You're right!");
-  }
-});
-
-}); // end jQuery
 
 </script>
 </body>
