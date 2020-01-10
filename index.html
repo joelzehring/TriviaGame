@@ -20,8 +20,9 @@ ul {
 }
 
 li {
+  height: 3em;
   padding: 1em;
-  margin: 1em;
+  margin: 1em 0 1em 0;
   background-color: gray;
   color: white;
 }
@@ -36,10 +37,6 @@ li {
 
 .responses {
   padding: 0;
-}
-
-.option {
-  margin-left: 0;
 }
 
 </style>
@@ -83,6 +80,7 @@ var quizCount = 0;
 var wins = 0;
 var losses = 0;
 var time = 10;
+var timer; 
 var challenges = [
   {
   q: "2 + 2",
@@ -116,26 +114,37 @@ function newRound() {
     time = 10;
     timer = setInterval(countdown,1000);
   }
+
+  else {
+    $(".instructions").text("You completed the quiz! Out of " + quizCount + " questions, you got " + wins + " right and " + losses + " wrong. Use the button to try again!");
+    $(".timer").text(" ");
+    clearInterval(timer);
+    $(".btn-start").text("Try again").show(100);
+  }
 }
 
-var timer; 
-
-function countdown() {
-  if (time > 0) {
-    time--;
-    $(".timer").text(time);
-  }
-  else {
-    clearInterval(timer);
-    losses++;
-    quizCount++;
-    $(".instructions").text("Out of time!");
+function feedback(msg) {
+  $(".instructions").text(msg);
     $(".timer").text(" ");
     clearInterval(timer);
     setTimeout(function(){
       newRound();},
       2000
     );
+}
+
+function countdown() {
+  if (time > 0) {
+    time--;
+    $(".timer").text(time);
+  }
+  
+  // user does not click an option in time
+  else {
+    clearInterval(timer);
+    losses++;
+    quizCount++;
+    feedback("Out of time!");
   }
 }
 
@@ -148,56 +157,24 @@ $(".btn-start").click(function (){
 });
   
 // user clicks button to answer question
-$(".option").on("click",function() {
+$(".option").click(function() {
+
+  // user clicks correct option
   if ($(this).text() == challenges[quizCount].a) {
     wins++;
     quizCount++;
-    $(".instructions").text("You're right!");
-    $(".timer").text(" ");
-    clearInterval(timer);
-    setTimeout(function(){
-      newRound();},
-      2000
-    );
+    feedback("You're right!");
   }
 
+  // user clicks incorrect option
   else if ($(this).text() !== challenges[quizCount].a) {
     losses++;
     quizCount++;
-    $(".instructions").text("Wrong answer!");
-    $(".timer").text(" ");
-    clearInterval(timer);
-    setTimeout(function(){
-      newRound();},
-      2000
-    );
+    feedback("Wrong answer!");
   }
 });
 
 }); // end jQuery
-
-// Intial instructions prompt user to start quiz
-
-// User clicks button to start quiz
-
-// First quiz question and multiple-choice options appear
-
-// Countdown timer begins counting down remaining time to select an option
-
-// If no option is selected, display a message telling the user time has run out, and display the correct answer
-  // setTimeout(2000);
-
-// If the user selects the wrong answer, display a "wrong answer" message and display the correct answer
-  //setTimeout(2000);
-
-// If the user selects the correct answer, display a "congrats" message
-  // setTimeout(2000);
-
-// After a short time, advance the user to the next question
-
-// When all questions have completed, display a message with number of questions answered correctly and incorrectly
-	
-// timer test
 
 </script>
 </body>
