@@ -39,6 +39,14 @@ li {
   padding: 0;
 }
 
+.answer-win {
+  background-color: green;
+}
+
+.answer-lose {
+  background-color: red;
+}
+
 </style>
 
 </head>
@@ -58,10 +66,7 @@ li {
   <div class="q-and-a">
     <p class="question"></p>
     <ul class="responses">
-      <li class="option option0"></li>
-      <li class="option option1"></li>
-      <li class="option option2"></li>
-      <li class="option option3"></li>
+      <!-- Multiple choice options will populate here -->
     </ul>
   </div>
   </main>
@@ -92,6 +97,11 @@ var challenges = [
   a: 13,
   options:[12,13,14,15]
   },
+  {
+  q: "Humans need oxygen to survive.",
+  a: "True",
+  options:["True","False"]
+  },
 ]
 
 function newGame() {
@@ -101,6 +111,7 @@ function newGame() {
 }
 
 function newRound() {
+  $(".responses").empty();
   console.log("newRound got called");
   if (quizCount < challenges.length) {
     $(".instructions").text("Click the option to answer the question.");
@@ -108,7 +119,13 @@ function newRound() {
 
     // populate response options
     for (var j = 0; j < challenges[quizCount].options.length; j++) {
-      $(".option" + j).text(challenges[quizCount].options[j]);
+      var option = $("<li>").addClass("option");
+      option.addClass("option");
+      option.text(challenges[quizCount].options[j]);
+      if (option.text === challenges[quizCount].a) {
+        option.addClass("correct");
+      }
+      $(".responses").append(option);
     }
 
     time = 10;
@@ -116,6 +133,7 @@ function newRound() {
   }
 
   else {
+    $(".question").empty();
     $(".instructions").text("You completed the quiz! Out of " + quizCount + " questions, you got " + wins + " right and " + losses + " wrong. Use the button to try again!");
     $(".timer").text(" ");
     clearInterval(timer);
@@ -129,7 +147,7 @@ function feedback(msg) {
     clearInterval(timer);
     setTimeout(function(){
       newRound();},
-      2000
+      1500
     );
 }
 
@@ -157,22 +175,26 @@ $(".btn-start").click(function (){
 });
   
 // user clicks button to answer question
-$(".option").click(function() {
+function handleResponse() {
 
   // user clicks correct option
   if ($(this).text() == challenges[quizCount].a) {
     wins++;
     quizCount++;
     feedback("You're right!");
+    $(this).addClass("answer-win");
   }
 
   // user clicks incorrect option
   else if ($(this).text() !== challenges[quizCount].a) {
+    feedback("Wrong answer!");
+    $(this).addClass("answer-lose");
     losses++;
     quizCount++;
-    feedback("Wrong answer!");
   }
-});
+}
+
+$(document).on("click", ".option", handleResponse);
 
 }); // end jQuery
 
