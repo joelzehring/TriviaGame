@@ -3,58 +3,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Trivia Game</title>
+  <title>MC Trivia Game</title>
   
   <!-- Added a link to Bootstrap-->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <!-- Added a link to our external stylesheet-->
   <link rel="stylesheet" href="assets/css/style.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
   <!-- Added link to the jQuery Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-<style>
-
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-li {
-  height: 3em;
-  padding: 1em;
-  margin: 1em 0 1em 0;
-  background-color: gray;
-  color: white;
-}
-
-.interface {
-  height: 5em;
-}
-
-.q-and-a {
-  margin: 1em;
-}
-
-.responses {
-  padding: 0;
-}
-
-.answer-win {
-  background-color: green;
-}
-
-.answer-lose {
-  background-color: red;
-}
-
-</style>
 
 </head>
 
 <body>
 
   <header>
-    <h1 class="header-title">Trivia Game</h1>
+    <h1 class="header-title">MC Trivia Game</h1>
   </header>
   
   <main>
@@ -76,130 +41,5 @@ li {
 
 <script src="assets/javascript/app.js" type="text/javascript"></script>
 
-<script>
-
-$(document).ready(function(){ // start jQuery
-
-
-var quizCount = 0;
-var wins = 0;
-var losses = 0;
-var time = 10;
-var timer; 
-var challenges = [
-  {
-  q: "2 + 2",
-  a: 4,
-  options:[1,2,3,4]
-  },
-  {
-  q: "6 + 7",
-  a: 13,
-  options:[12,13,14,15]
-  },
-  {
-  q: "Humans need oxygen to survive.",
-  a: "True",
-  options:["True","False"]
-  },
-]
-
-function newGame() {
-  quizCount = 0;
-  wins = 0;
-  losses = 0;
-}
-
-function newRound() {
-  $(".responses").empty();
-  console.log("newRound got called");
-  if (quizCount < challenges.length) {
-    $(".instructions").text("Click the option to answer the question.");
-    $(".question").text(challenges[quizCount].q);
-
-    // populate response options
-    for (var j = 0; j < challenges[quizCount].options.length; j++) {
-      var option = $("<li>").addClass("option");
-      option.addClass("option");
-      option.text(challenges[quizCount].options[j]);
-      if (option.text() == challenges[quizCount].a) {
-        option.addClass("correct");
-      }
-      $(".responses").append(option);
-    }
-
-    time = 10;
-    timer = setInterval(countdown,1000);
-  }
-
-  else {
-    // End of quiz
-    $(".question").empty();
-    $(".instructions").text("You completed the quiz! Out of " + quizCount + " questions, you got " + wins + " right and " + losses + " wrong. Use the button to try again!");
-    $(".timer").text(" ");
-    clearInterval(timer);
-    $(".btn-start").text("Try again").show(100);
-  }
-}
-
-// Common operations for all responses
-function feedback(msg) {
-  $(".instructions").text(msg);
-    $(".timer").text(" ");
-    clearInterval(timer);
-    setTimeout(function(){
-      newRound();},
-      1500
-    );
-}
-
-function countdown() {
-  if (time > 0) {
-    time--;
-    $(".timer").text(time);
-  }
-  
-  // user does not click an option in time
-  else {
-    clearInterval(timer);
-    losses++;
-    quizCount++;
-    feedback("Out of time!");
-  }
-}
-
-// user clicks button to start quiz
-$(".btn-start").click(function (){
-  $(".btn-start").hide(100);
-  newGame();
-  newRound();
-});
-  
-// user clicks button to answer question
-function handleResponse() {
-
-  // user clicks correct option
-  if ($(this).text() == challenges[quizCount].a) {
-    wins++;
-    quizCount++;
-    feedback("You're right!");
-    $(this).addClass("answer-win");
-  }
-
-  // user clicks incorrect option
-  else if ($(this).text() !== challenges[quizCount].a) {
-    feedback("Wrong answer!");
-    $(this).addClass("answer-lose");
-    var rightAnswer = $(".correct").addClass("answer-win");
-    losses++;
-    quizCount++;
-  }
-}
-
-$(document).on("click", ".option", handleResponse);
-
-}); // end jQuery
-
-</script>
 </body>
 </html>
