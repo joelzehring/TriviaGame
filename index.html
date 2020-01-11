@@ -122,7 +122,7 @@ function newRound() {
       var option = $("<li>").addClass("option");
       option.addClass("option");
       option.text(challenges[quizCount].options[j]);
-      if (option.text === challenges[quizCount].a) {
+      if (option.text() == challenges[quizCount].a) {
         option.addClass("correct");
       }
       $(".responses").append(option);
@@ -133,6 +133,7 @@ function newRound() {
   }
 
   else {
+    // End of quiz
     $(".question").empty();
     $(".instructions").text("You completed the quiz! Out of " + quizCount + " questions, you got " + wins + " right and " + losses + " wrong. Use the button to try again!");
     $(".timer").text(" ");
@@ -141,6 +142,7 @@ function newRound() {
   }
 }
 
+// Common operations for all responses
 function feedback(msg) {
   $(".instructions").text(msg);
     $(".timer").text(" ");
@@ -166,7 +168,6 @@ function countdown() {
   }
 }
 
-
 // user clicks button to start quiz
 $(".btn-start").click(function (){
   $(".btn-start").hide(100);
@@ -189,6 +190,7 @@ function handleResponse() {
   else if ($(this).text() !== challenges[quizCount].a) {
     feedback("Wrong answer!");
     $(this).addClass("answer-lose");
+    var rightAnswer = $(".correct").addClass("answer-win");
     losses++;
     quizCount++;
   }
